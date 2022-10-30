@@ -15,14 +15,17 @@
     <body class="bg-dark text-white">
         <div class="container mt-2">
             <div>
-                <label>Insert Task Name:</label>
+                <label class="display-6">Insert Task Name:</label>
                 <div class="input-group my-1">
                     <input id="taskBox" class="form-control col-md-2 bg-dark text-white" type="text" placeholder="Task Name" minlength="5" required>
                     <button id="addBtn" class="btn btn-outline-primary">Submit</button>    
                 </div>
             </div>
-            <div id="taskList">
-                <p id="taskHeader">Tasks: </p>
+            <div>
+                <p id="taskHeader" class="display-6">Tasks: </p>
+                <div id="taskList" class="d-flex mx-6 justify-content-center flex-column">
+
+                </div>
             </div>
         </div>
         <script src="app.js"></script>

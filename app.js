@@ -17,17 +17,13 @@ function createTask(id, taskName, counter) {
     const box = document.createElement('div');
     box.id = 'taskDiv' + counter;
 
-    const boxClassAttribute = document.createAttribute('class');
-    boxClassAttribute.value = 'd-flex justify-content-center m-2 align-items-end';
-    box.setAttributeNode(boxClassAttribute);
+    box.setAttribute('class', 'd-flex justify-content-center mx-auto my-2 align-items-end border border-primary p-3 rounded-3');
 
     const deleteTask = document.createElement('button');
     deleteTask.innerHTML = "Finish task"
     deleteTask.id = 'taskButton' + counter;
 
-    const btnClassAttribute = document.createAttribute('class');
-    btnClassAttribute.value = 'btn btn-outline-primary btn-sm ms-2 my-auto';
-    deleteTask.setAttributeNode(btnClassAttribute);
+    deleteTask.setAttribute('class', 'btn btn-outline-primary btn-sm ms-2 my-auto');
 
     deleteTask.addEventListener('click', () => {
         document.getElementById(box.id).remove();
@@ -37,9 +33,7 @@ function createTask(id, taskName, counter) {
     task.innerHTML = taskName;
     task.id = 'taskP' + counter;
 
-    const pClassAttribute = document.createAttribute('class');
-    pClassAttribute.value = 'my-auto';
-    task.setAttributeNode(pClassAttribute);
+    task.setAttribute('class', 'my-auto');
 
     box.appendChild(task);
     box.appendChild(deleteTask);
