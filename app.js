@@ -2,7 +2,7 @@ const taskContainerBoxClass = 'd-flex w-100 p-3 border-bottom flex-wrap';
 const strikedTextClass = 'my-auto me-auto text-decoration-line-through fst-italic text-wrap text-break';
 const normalTextClass = 'my-auto me-auto text-wrap text-break';
 const checkboxClass = 'my-auto mx-2 w-16 bigger-checkbox';
-const deleteBtnClass = 'btn btn-primary btn-sm ms-2 my-auto';
+const deleteBtnClass = 'btn btn-primary btn-sm my-auto';
 
 let addBtn = document.getElementById('addBtn');
 const taskInput =  document.getElementById('taskInput');
