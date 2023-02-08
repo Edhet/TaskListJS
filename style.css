@@ -2,6 +2,10 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
-#taskBox {
+.top-margin {
+    margin-top: 10%;
+}
+
+#taskInput {
     border-color: #0d6efd; 
 }

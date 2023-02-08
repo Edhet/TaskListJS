@@ -1,47 +1,104 @@
-let counter = 0;
+const taskContainerBoxClass = 'd-flex justify-content-center align-items-end w-100 p-3 border-bottom';
+const strikedTextClass = 'my-auto me-auto text-decoration-line-through fst-italic';
+const normalTextClass = 'my-auto me-auto';
+const checkboxClass = 'my-auto mx-2';
+const deleteBtnClass = 'btn btn-primary btn-sm ms-2 my-auto';
 
 let addBtn = document.getElementById('addBtn');
-const taskBox = 'taskBox';
-const taskList = 'taskList';
+const taskInput =  document.getElementById('taskInput');
+const taskList = document.getElementById('taskList');
 
-addBtn.onclick = () => {
-    let taskName = document.getElementById(taskBox).value;
-    if (taskName == "" || taskName == null) {
-        return;
-    }
-   
-    createTask(taskBox, taskName, ++counter);
+let taskCounter = 0;
+let taskArray = [];
+let taskBoxesArray = [];
+
+if (localStorage.tasks) {
+    taskArray = JSON.parse(localStorage.tasks);
+    taskArray.forEach(task => {
+        addTaskToList(task);
+        taskCounter++;
+    });
 }
 
-function createTask(id, taskName, counter) {
+taskInput.addEventListener('keyup', keyPress => {
+    if (keyPress.key === "Enter" && taskInput.value)
+        createTask(taskInput.value);
+});
+
+addBtn.addEventListener('click', () => {
+    if (taskInput.value)
+        createTask(taskInput.value);
+});
+
+function createTask(taskName) {
+    let newTask = { name: taskName, completed: false };
+    taskArray.push(newTask);
+    localStorage.tasks = JSON.stringify(taskArray);
+    addTaskToList(newTask);
+    taskCounter++;
+}
+
+function addTaskToList(savedTask) {
     const box = document.createElement('div');
-    box.id = 'taskDiv' + counter;
+    box.setAttribute('id', taskCounter.toString());
+    box.setAttribute('class', taskContainerBoxClass);
+    taskBoxesArray.push(box);
 
-    box.setAttribute('class', 'd-flex justify-content-center mx-auto my-2 align-items-end border border-primary p-3 rounded-3');
-
-    const deleteTask = document.createElement('button');
-    deleteTask.innerHTML = "Finish task"
-    deleteTask.id = 'taskButton' + counter;
-
-    deleteTask.setAttribute('class', 'btn btn-outline-primary btn-sm ms-2 my-auto');
-
-    deleteTask.addEventListener('click', () => {
-        document.getElementById(box.id).remove();
+    const deleteTaskBtn = document.createElement('button');
+    deleteTaskBtn.textContent = "Finish task"
+    deleteTaskBtn.setAttribute('class', deleteBtnClass);
+    deleteTaskBtn.addEventListener('click', () => {
+        removeTask(box.id);
+        box.remove();
     });
-    
-    const task = document.createElement('p');
-    task.innerHTML = taskName;
-    task.id = 'taskP' + counter;
 
-    task.setAttribute('class', 'my-auto');
+    const task = document.createElement('p');
+    task.textContent = savedTask.name;
+    task.setAttribute('class',(savedTask.completed) ? strikedTextClass : normalTextClass);
+
+    const completeTaskBtn = document.createElement('Input');
+    completeTaskBtn.setAttribute('type', 'checkbox');
+    completeTaskBtn.setAttribute('class', checkboxClass);
+    completeTaskBtn.addEventListener('change', () => {
+        changeTaskState(box.id);
+        task.setAttribute('class', (completeTaskBtn.checked) ? strikedTextClass : normalTextClass)
+    });
+
+    if (savedTask.completed)
+        completeTaskBtn.setAttribute('checked', 'true');
 
     box.appendChild(task);
-    box.appendChild(deleteTask);
-
-    document.getElementById(taskList).appendChild(box);
-    resetInputBox(id);
+    box.appendChild(completeTaskBtn);
+    box.appendChild(deleteTaskBtn);
+    taskList.appendChild(box);
+    taskInput.value = "";
+    adjustListBorders();
 }
 
-function resetInputBox(id) {
-    document.getElementById(id).value = "";
+function removeTask(taskIndex) {
+    taskArray.splice(taskIndex, 1);
+    taskBoxesArray.splice(taskIndex, 1);
+    localStorage.tasks = JSON.stringify(taskArray);
+
+    let newCounter = 0;
+    taskBoxesArray.forEach(box => {
+        box.id = newCounter.toString();
+        newCounter++;
+    });
+    taskCounter = newCounter;
+    adjustListBorders();
+}
+
+function changeTaskState(taskIndex) {
+    taskArray[Number(taskIndex)].completed = !taskArray[Number(taskIndex)].completed;
+    localStorage.tasks = JSON.stringify(taskArray);
+}
+
+function adjustListBorders() {
+    for (let index in taskBoxesArray) {
+        if (Number(index) == taskBoxesArray.length - 1)
+            taskBoxesArray[index].className = 'd-flex justify-content-center align-items-end w-100 p-3';
+        else
+            taskBoxesArray[index].className = 'd-flex justify-content-center align-items-end w-100 p-3 border-bottom';
+    }
 }
