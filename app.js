@@ -1,7 +1,7 @@
 const taskContainerBoxClass = 'd-flex justify-content-center align-items-end w-100 p-3 border-bottom';
 const strikedTextClass = 'my-auto me-auto text-decoration-line-through fst-italic';
 const normalTextClass = 'my-auto me-auto';
-const checkboxClass = 'my-auto mx-2';
+const checkboxClass = 'my-auto mx-2 w-16 bigger-checkbox';
 const deleteBtnClass = 'btn btn-primary btn-sm ms-2 my-auto';
 
 let addBtn = document.getElementById('addBtn');
@@ -45,7 +45,7 @@ function addTaskToList(savedTask) {
     taskBoxesArray.push(box);
 
     const deleteTaskBtn = document.createElement('button');
-    deleteTaskBtn.textContent = "Finish task"
+    deleteTaskBtn.textContent = "Delete"
     deleteTaskBtn.setAttribute('class', deleteBtnClass);
     deleteTaskBtn.addEventListener('click', () => {
         removeTask(box.id);
