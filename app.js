@@ -7,6 +7,7 @@ const deleteBtnClass = 'btn btn-primary btn-sm my-auto';
 let addBtn = document.getElementById('addBtn');
 const taskInput =  document.getElementById('taskInput');
 const taskList = document.getElementById('taskList');
+const emptyTaskMessage = document.createElement('p');
 
 let taskCounter = 0;
 let taskArray = [];
@@ -19,6 +20,8 @@ if (localStorage.tasks) {
         taskCounter++;
     });
 }
+
+createEmptyListMessage();
 
 taskInput.addEventListener('keyup', keyPress => {
     if (keyPress.key === "Enter" && taskInput.value)
@@ -36,6 +39,7 @@ function createTask(taskName) {
     localStorage.tasks = JSON.stringify(taskArray);
     addTaskToList(newTask);
     taskCounter++;
+    checkForEmpty();
 }
 
 function addTaskToList(savedTask) {
@@ -87,6 +91,7 @@ function removeTask(taskIndex) {
     });
     taskCounter = newCounter;
     adjustListBorders();
+    checkForEmpty();
 }
 
 function changeTaskState(taskIndex) {
@@ -101,4 +106,18 @@ function adjustListBorders() {
         else
             taskBoxesArray[index].className = 'd-flex justify-content-center align-items-end w-100 p-3 border-bottom';
     }
+}
+
+function createEmptyListMessage() {
+    emptyTaskMessage.className = 'text-muted text-center';
+    emptyTaskMessage.textContent = "No tasks left";
+    taskList.appendChild(emptyTaskMessage);
+    checkForEmpty();
+}
+
+function checkForEmpty() {
+    if (taskBoxesArray.length > 0 && taskArray.length > 0)
+        emptyTaskMessage.className = 'd-none';
+    else
+        emptyTaskMessage.className = 'text-muted text-center';
 }
